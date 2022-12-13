@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import {
   Breadcrumb,
@@ -11,6 +11,10 @@ import {
   Button,
   Space,
   Card,
+  Modal,
+  Checkbox,
+  Form,
+  Input,
 } from "antd";
 import cover from "../../../assets/img/cover-img.svg";
 import proven from "../../../assets/img/proven.svg";
@@ -22,9 +26,30 @@ const { Header, Content, Footer } = Layout;
 const { Title, Text, Paragraph } = Typography;
 
 const LandingPage = (props) => {
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
+  const [open, setOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [modalText, setModalText] = useState("Content of the modal");
+  const showModal = () => {
+    setOpen(true);
+  };
+  const handleOk = () => {
+    setModalText("The modal will be closed after two seconds");
+    setConfirmLoading(true);
+    setTimeout(() => {
+      setOpen(false);
+      setConfirmLoading(false);
+    }, 2000);
+  };
+  const handleCancel = () => {
+    console.log("Clicked cancel button");
+    setOpen(false);
+  };
+  const onFinish = (values) => {
+    console.log("Success:", values);
+  };
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
   return (
     <Layout className="thefont">
       <Header
@@ -108,10 +133,87 @@ const LandingPage = (props) => {
                 <Button className="thefont" type="primary" shape="round">
                   Get Started
                 </Button>
-                <Button className="thefont" type="primary" shape="round" ghost>
+                <Button
+                  className="thefont"
+                  type="primary"
+                  shape="round"
+                  onClick={showModal}
+                  ghost
+                >
                   Register
                 </Button>
               </Space>
+              <Modal
+                title="Title"
+                open={open}
+                onOk={handleOk}
+                confirmLoading={confirmLoading}
+                onCancel={handleCancel}
+              >
+                <Form
+                  name="basic"
+                  labelCol={{
+                    span: 8,
+                  }}
+                  wrapperCol={{
+                    span: 16,
+                  }}
+                  initialValues={{
+                    remember: true,
+                  }}
+                  onFinish={onFinish}
+                  onFinishFailed={onFinishFailed}
+                  autoComplete="off"
+                >
+                  <Form.Item
+                    label="Username"
+                    name="username"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your username!",
+                      },
+                    ]}
+                  >
+                    <Input />
+                  </Form.Item>
+
+                  <Form.Item
+                    label="Password"
+                    name="password"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your password!",
+                      },
+                    ]}
+                  >
+                    <Input.Password />
+                  </Form.Item>
+
+                  <Form.Item
+                    name="remember"
+                    valuePropName="checked"
+                    wrapperCol={{
+                      offset: 8,
+                      span: 16,
+                    }}
+                  >
+                    <Checkbox>Remember me</Checkbox>
+                  </Form.Item>
+
+                  <Form.Item
+                    wrapperCol={{
+                      offset: 8,
+                      span: 16,
+                    }}
+                  >
+                    <Button type="primary" htmlType="submit">
+                      Submit
+                    </Button>
+                  </Form.Item>
+                </Form>
+              </Modal>
             </div>
           </Col>
           <Col xs={24} sm={24} md={10} lg={10}>
@@ -211,7 +313,7 @@ const LandingPage = (props) => {
                   bordered={false}
                   cover={
                     <img
-                      style={{ height: "30vh" }}
+                      style={{ height: "30vh", padding: "10px" }}
                       alt="example"
                       src={proven}
                     />
@@ -237,7 +339,11 @@ const LandingPage = (props) => {
                   hoverable
                   bordered={false}
                   cover={
-                    <img style={{ height: "30vh" }} alt="example" src={scale} />
+                    <img
+                      style={{ height: "30vh", padding: "10px" }}
+                      alt="example"
+                      src={scale}
+                    />
                   }
                 >
                   <Title level={4} type="secondary" className="thefont">
@@ -260,7 +366,11 @@ const LandingPage = (props) => {
                   hoverable
                   bordered={false}
                   cover={
-                    <img style={{ height: "30vh" }} alt="example" src={email} />
+                    <img
+                      style={{ height: "30vh", padding: "10px" }}
+                      alt="example"
+                      src={email}
+                    />
                   }
                 >
                   <Title level={4} type="secondary" className="thefont">
