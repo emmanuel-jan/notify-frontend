@@ -99,6 +99,7 @@ const LandingPage = (props) => {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
+              height:'100vh'
             }}
           >
             <div>
@@ -144,7 +145,7 @@ const LandingPage = (props) => {
                 </Button>
               </Space>
               <Modal
-                title="Title"
+                title={<Title align="center" level={3} type="secondary">Your Details Will Help Us Set You Up!</Title>}
                 open={open}
                 onOk={handleOk}
                 confirmLoading={confirmLoading}
@@ -166,20 +167,55 @@ const LandingPage = (props) => {
                   autoComplete="off"
                 >
                   <Form.Item
-                    label="Username"
-                    name="username"
+                    name="name"
                     rules={[
                       {
                         required: true,
-                        message: "Please input your username!",
+                        message: "Please input your name!",
                       },
                     ]}
+                    align="center"
                   >
-                    <Input />
+                    <Input placeholder="John Doe" />
+                  </Form.Item>
+                  <Form.Item
+                    name="appname"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your appname!",
+                      },
+                    ]}
+                    align="center"
+                  >
+                    <Input placeholder="Enter Name of Your App" />
+                  </Form.Item>
+                  <Form.Item
+                    name="phone"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your phone number!",
+                      },
+                    ]}
+                    align="center"
+                  >
+                    <Input placeholder="Enter Your Phone Number" />
+                  </Form.Item>
+                  <Form.Item
+                    name="email"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your email!",
+                      },
+                    ]}
+                    align="center"
+                  >
+                    <Input placeholder="Enter Your Emai;" />
                   </Form.Item>
 
                   <Form.Item
-                    label="Password"
                     name="password"
                     rules={[
                       {
@@ -187,19 +223,9 @@ const LandingPage = (props) => {
                         message: "Please input your password!",
                       },
                     ]}
+                    align="center"
                   >
-                    <Input.Password />
-                  </Form.Item>
-
-                  <Form.Item
-                    name="remember"
-                    valuePropName="checked"
-                    wrapperCol={{
-                      offset: 8,
-                      span: 16,
-                    }}
-                  >
-                    <Checkbox>Remember me</Checkbox>
+                    <Input.Password placeholder="Enter Your Password" />
                   </Form.Item>
 
                   <Form.Item
@@ -208,9 +234,9 @@ const LandingPage = (props) => {
                       span: 16,
                     }}
                   >
-                    <Button type="primary" htmlType="submit">
+                    {/* <Button type="primary" htmlType="submit">
                       Submit
-                    </Button>
+                    </Button> */}
                   </Form.Item>
                 </Form>
               </Modal>
@@ -220,7 +246,7 @@ const LandingPage = (props) => {
             <img style={{ width: "100%" }} src={cover} alt="" />
           </Col>
         </Row>
-        <Row gutter={[16, 24]} justify="center">
+        <Row gutter={[16, 24]} justify="center" style={{ display:"flex", justifyContent:"center", alignItems:"center"}}>
           <Col xs={24} sm={24} md={20} lg={20}>
             <Col xs={24} sm={24} md={24} lg={24}>
               <Title
@@ -293,7 +319,7 @@ const LandingPage = (props) => {
             </Row>
           </Col>
         </Row>
-        <Row justify="center">
+        <Row justify="center" style={{height:"100vh", display:"flex", justifyContent:"center", alignItems:"center"}}>
           <Col xs={24} sm={24} md={20} lg={20}>
             <Row gutter={16}>
               <Col align="center" xs={24} sm={24} md={24} lg={24}>
