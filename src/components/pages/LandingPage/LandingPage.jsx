@@ -15,6 +15,9 @@ import {
   Checkbox,
   Form,
   Input,
+  Select,
+  DatePicker,
+  Drawer,
 } from "antd";
 import cover from "../../../assets/img/cover-img.svg";
 import proven from "../../../assets/img/proven.svg";
@@ -23,36 +26,41 @@ import email from "../../../assets/img/email.svg";
 import { DollarCircleOutlined } from "@ant-design/icons";
 import "./LandingPage.css";
 import { motion, useScroll } from "framer-motion";
+import axios from "axios";
 
+const { Option } = Select;
 const { Header, Content, Footer } = Layout;
 const { Title, Text, Paragraph } = Typography;
 
 const LandingPage = (props) => {
   const [open, setOpen] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
-  const [modalText, setModalText] = useState("Content of the modal");
-  const showModal = () => {
-    setOpen(true);
-  };
-  const handleOk = () => {
-    setModalText("The modal will be closed after two seconds");
-    setConfirmLoading(true);
-    setTimeout(() => {
+
+  const onFinish = async (values) => {
+    console.log(values);
+    const result = await axios.post(
+      "https://notify.com/api/saveApplication",
+      values
+    );
+    try {
+      console.log("Data Saved successfully", result);
       setOpen(false);
-      setConfirmLoading(false);
-    }, 2000);
+    } catch (err) {
+      console.log("Something went wrong", err);
+    }
   };
-  const handleCancel = () => {
-    console.log("Clicked cancel button");
-    setOpen(false);
-  };
-  const onFinish = (values) => {
-    console.log("Success:", values);
-  };
+
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-  const { scrollYProgress } = useScroll();
+
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Layout className="thefont">
       <Header
@@ -72,10 +80,13 @@ const LandingPage = (props) => {
               type="secondary"
               level={2}
             >
-              <motion.div initial={{y:-250}} animate={{y:0}} transition={{delay:0.5}}>
-              Notify
+              <motion.div
+                initial={{ y: -250 }}
+                animate={{ y: 0 }}
+                transition={{ delay: 0.5 }}
+              >
+                Notify
               </motion.div>
-              
             </Title>
           </Col>
           <Col align="center" xs={24} sm={24} md={15} lg={15}></Col>
@@ -101,12 +112,11 @@ const LandingPage = (props) => {
             }}
           >
             <motion.div
-              initial={{ opacity: 0, y: -250 }}
+              initial={{ opacity: 0 }}
               animate={{
                 opacity: 1,
-                y: -10,
               }}
-              transition={{delay:1.5, duration:0.5}}
+              transition={{ delay: 1.5, duration: 0.5 }}
             >
               <div>
                 <Text
@@ -145,125 +155,125 @@ const LandingPage = (props) => {
                     className="thefont"
                     type="primary"
                     shape="round"
-                    onClick={showModal}
+                    onClick={showDrawer}
                     ghost
                   >
                     Register
                   </Button>
                 </Space>
-                <Modal
-                  title={
-                    <Title align="center" level={3} type="secondary">
-                      Your Details Will Help Us Set You Up!
-                    </Title>
-                  }
+                <Drawer
+                  title="Let's set you up!"
+                  onClose={onClose}
                   open={open}
-                  onOk={handleOk}
-                  confirmLoading={confirmLoading}
-                  onCancel={handleCancel}
+                  bodyStyle={{
+                    paddingBottom: 80,
+                  }}
                 >
                   <Form
-                    name="basic"
-                    labelCol={{
-                      span: 8,
-                    }}
-                    wrapperCol={{
-                      span: 16,
-                    }}
+                    layout="vertical"
+                    hideRequiredMark
                     initialValues={{
                       remember: true,
                     }}
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
-                    autoComplete="off"
                   >
-                    <Form.Item
-                      name="name"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your name!",
-                        },
-                      ]}
-                      align="center"
-                    >
-                      <Input placeholder="John Doe" />
-                    </Form.Item>
-                    <Form.Item
-                      name="appname"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your appname!",
-                        },
-                      ]}
-                      align="center"
-                    >
-                      <Input placeholder="Enter Name of Your App" />
-                    </Form.Item>
-                    <Form.Item
-                      name="phone"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your phone number!",
-                        },
-                      ]}
-                      align="center"
-                    >
-                      <Input placeholder="Enter Your Phone Number" />
-                    </Form.Item>
-                    <Form.Item
-                      name="email"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your email!",
-                        },
-                      ]}
-                      align="center"
-                    >
-                      <Input placeholder="Enter Your Emai;" />
-                    </Form.Item>
+                    <Row gutter={16}>
+                      <Col span={24}>
+                        <Form.Item
+                          name="devName"
+                          label="Name"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please enter your name",
+                            },
+                          ]}
+                        >
+                          <Input placeholder="Please enter your name" />
+                        </Form.Item>
+                      </Col>
+                      <Col span={24}>
+                        <Form.Item
+                          name="appName"
+                          label="Company Name"
+                          rules={[
+                            {
+                              required: true,
+                              message:
+                                "Please enter the name of your company/app",
+                            },
+                          ]}
+                        >
+                          <Input placeholder="Please the name of your company/app" />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                    <Row gutter={16}>
+                      <Col span={24}>
+                        <Form.Item
+                          name="email"
+                          label="Your Email"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please enter your email",
+                            },
+                          ]}
+                        >
+                          <Input placeholder="Please enter your email" />
+                        </Form.Item>
+                      </Col>
+                      <Col span={24}>
+                        <Form.Item
+                          name="devContact"
+                          label="Phone Number"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please enter your phone number",
+                            },
+                          ]}
+                        >
+                          <Input placeholder="Please enter your phone number" />
+                        </Form.Item>
+                      </Col>
+                    </Row>
 
-                    <Form.Item
-                      name="password"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your password!",
-                        },
-                      ]}
-                      align="center"
-                    >
-                      <Input.Password placeholder="Enter Your Password" />
-                    </Form.Item>
-
-                    <Form.Item
-                      wrapperCol={{
-                        offset: 8,
-                        span: 16,
-                      }}
-                    >
-                      {/* <Button type="primary" htmlType="submit">
+                    <Row gutter={16}>
+                      <Col span={24}>
+                        <Form.Item
+                          name="password"
+                          label="Password"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please enter your password",
+                            },
+                          ]}
+                        >
+                          <Input.Password placeholder="Please enter your password" />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                    <Button type="primary" htmlType="submit">
                       Submit
-                    </Button> */}
-                    </Form.Item>
+                    </Button>
                   </Form>
-                </Modal>
+                </Drawer>
               </div>
             </motion.div>
           </Col>
 
           <Col xs={24} sm={24} md={10} lg={10}>
-          <motion.div
-              initial={{ opacity: 0}}
+            <motion.div
+              initial={{ opacity: 0 }}
               animate={{
                 opacity: 1,
               }}
-              transition={{delay:1.5}}
+              transition={{ delay: 1.5 }}
             >
-            <img style={{ width: "100%" }} src={cover} alt="" />
+              <img style={{ width: "100%" }} src={cover} alt="" />
             </motion.div>
           </Col>
         </Row>
@@ -275,6 +285,7 @@ const LandingPage = (props) => {
             justifyContent: "center",
             alignItems: "center",
           }}
+          className="responsiveHeight"
         >
           <Col xs={24} sm={24} md={20} lg={20}>
             <Col xs={24} sm={24} md={24} lg={24}>
@@ -351,14 +362,14 @@ const LandingPage = (props) => {
         <Row
           justify="center"
           style={{
-            height: "100vh",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
           }}
+          className="responsiveHeight"
         >
           <Col xs={24} sm={24} md={20} lg={20}>
-            <Row gutter={16}>
+            <Row>
               <Col align="center" xs={24} sm={24} md={24} lg={24}>
                 <Title
                   className="thefont"
@@ -369,7 +380,9 @@ const LandingPage = (props) => {
                   The Notify Difference
                 </Title>
               </Col>
-              <Col xs={24} sm={24} md={8}>
+            </Row>
+            <Row align="center" style={{ display: "flex", gap: "10px" }}>
+              <Col xs={24} sm={24} md={7}>
                 <Card
                   align="center"
                   hoverable
@@ -396,7 +409,7 @@ const LandingPage = (props) => {
                   </Text>
                 </Card>
               </Col>
-              <Col xs={24} sm={24} md={8}>
+              <Col xs={24} sm={24} md={7}>
                 <Card
                   align="center"
                   hoverable
@@ -423,7 +436,7 @@ const LandingPage = (props) => {
                   </Text>
                 </Card>
               </Col>
-              <Col xs={24} sm={24} md={8}>
+              <Col xs={24} sm={24} md={7}>
                 <Card
                   align="center"
                   hoverable
