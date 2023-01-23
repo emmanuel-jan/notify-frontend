@@ -265,7 +265,7 @@ const LandingPage = (props) => {
             </motion.div>
           </Col>
 
-          <Col xs={24} sm={24} md={10} lg={10}>
+          <Col xs={0} sm={0} md={10} lg={10}>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{
