@@ -18,6 +18,7 @@ import {
   Select,
   DatePicker,
   Drawer,
+  List,
 } from "antd";
 import cover from "../../../assets/img/cover-img.svg";
 import proven from "../../../assets/img/proven.svg";
@@ -31,6 +32,14 @@ import axios from "axios";
 const { Option } = Select;
 const { Header, Content, Footer } = Layout;
 const { Title, Text, Paragraph } = Typography;
+const data = [
+  "On your computer, open Chrome.",
+  "Make sure you’re signed in to Chrome.",
+  "Go to a website and sign up for an account.",
+  "Click the password text box and then Suggest Strong Password. If you don't find this option, right-click the password text box, then click Generate password.",
+  "You'll see a preview of the password. To confirm, click Use suggested password.",
+  "Finish signing up for your account.",
+];
 
 const LandingPage = (props) => {
   const [open, setOpen] = useState(false);
@@ -244,7 +253,7 @@ const LandingPage = (props) => {
                       <Col span={24}>
                         <Form.Item
                           name="password"
-                          label="Password"
+                          label="Google Generated Password"
                           rules={[
                             {
                               required: true,
@@ -252,7 +261,7 @@ const LandingPage = (props) => {
                             },
                           ]}
                         >
-                          <Input.Password placeholder="Please enter your password" />
+                          <Input.Password placeholder="Please enter your google generated password" />
                         </Form.Item>
                       </Col>
                     </Row>
@@ -464,6 +473,148 @@ const LandingPage = (props) => {
                 </Card>
               </Col>
             </Row>
+          </Col>
+        </Row>
+        <Row align="center" className="responsiveHeight" style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
+          <Col xs={24} sm={24} md={14} lg={14}>
+            <Title
+              className="thefont"
+              type="secondary"
+              level={2}
+              style={{ color: "#1890ff" }}
+            >
+              To get started, you need a Google generated password!
+            </Title>
+            <List
+              header={
+                <Title className="thefont" type="secondary" level={4}>
+                  The following steps should help ...
+                </Title>
+              }
+              footer={
+                <div>
+                  Your generated password is automatically saved to your Google
+                  Account. <br />
+                  For more information visit{" "}
+                  <a
+                    href="https://support.google.com/chrome/answer/7570435?hl=en&co=GENIE.Platform%3DDesktop"
+                    target="_blank"
+                  >
+                    Google Support
+                  </a>
+                </div>
+              }
+              bordered
+              dataSource={data}
+              renderItem={(item) => (
+                <List.Item>
+                  <Typography.Text mark></Typography.Text> {item}
+                </List.Item>
+              )}
+            />
+          </Col>
+        </Row>
+        <Row align="center" className="responsiveHeight" style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
+          <Col align="center" xs={24} sm={24} md={14} lg={14}>
+            <Title
+              className="thefont"
+              type="secondary"
+              level={2}
+              style={{ color: "#1890ff" }}
+            >
+              After Generating your password, you can now setup your account here
+            </Title>
+            <Form
+                    layout="vertical"
+                    hideRequiredMark
+                    initialValues={{
+                      remember: true,
+                    }}
+                    onFinish={onFinish}
+                    onFinishFailed={onFinishFailed}
+                  >
+                    <Row align={"center"} gutter={16}>
+                      <Col span={18}>
+                        <Form.Item
+                          name="devName"
+                          label="Name"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please enter your name",
+                            },
+                          ]}
+                        >
+                          <Input placeholder="Please enter your name" />
+                        </Form.Item>
+                      </Col>
+                      <Col span={18}>
+                        <Form.Item
+                          name="appName"
+                          label="Company Name"
+                          rules={[
+                            {
+                              required: true,
+                              message:
+                                "Please enter the name of your company/app",
+                            },
+                          ]}
+                        >
+                          <Input placeholder="Please the name of your company/app" />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                    <Row align={"center"} gutter={16}>
+                      <Col span={18}>
+                        <Form.Item
+                          name="email"
+                          label="Your Email"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please enter your email",
+                            },
+                          ]}
+                        >
+                          <Input placeholder="Please enter your email" />
+                        </Form.Item>
+                      </Col>
+                      <Col span={18}>
+                        <Form.Item
+                          name="devContact"
+                          label="Phone Number"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please enter your phone number",
+                            },
+                          ]}
+                        >
+                          <Input placeholder="Please enter your phone number" />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+
+                    <Row align={"center"} gutter={16}>
+                      <Col span={18}>
+                        <Form.Item
+                          name="password"
+                          label="Google Generated Password"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please enter your password",
+                            },
+                          ]}
+                        >
+                          <Input.Password placeholder="Please enter your google generated password" />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                    <Button type="primary" htmlType="submit">
+                      Submit
+                    </Button>
+                  </Form>
           </Col>
         </Row>
       </Content>
