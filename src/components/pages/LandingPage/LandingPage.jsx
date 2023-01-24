@@ -38,7 +38,7 @@ const LandingPage = (props) => {
   const onFinish = async (values) => {
     console.log(values);
     const result = await axios.post(
-      "https://notify.com/api/saveApplication",
+      "http://194.195.119.4:8041/api/saveApplication",
       values
     );
     try {
